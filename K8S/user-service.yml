@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: default
+  labels:
+    app: user-service
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  replicas: 2
+  minReadySeconds: 15
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: shamim72/user-service:1.0.1
+          ports:
+            - containerPort: 8080
+              # name:  user-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: default
+spec:
+  selector:
+    app: user-service
+  type: LoadBalancer
+  ports:
+    - name: user-service
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

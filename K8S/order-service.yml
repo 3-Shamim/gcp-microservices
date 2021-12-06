@@ -1,0 +1,56 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: gcp-config
+  namespace: default
+data:
+  USER-SERVICE-URL: http://user-service.default.svc.cluster.local
+  # USER-SERVICE-URL: http://user-service:8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: default
+  labels:
+    app: order-service
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+  replicas: 2
+  minReadySeconds: 15
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: shamim72/order-service:1.0.0
+          env:
+          - name: USER-SERVICE-URL
+            valueFrom:
+              configMapKeyRef:
+                name: gcp-config
+                key: USER-SERVICE-URL
+          ports:
+            - containerPort: 9090
+              # name:  order-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: default
+spec:
+  selector:
+    app: order-service
+  type: LoadBalancer
+  ports:
+    - name: order-service
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
