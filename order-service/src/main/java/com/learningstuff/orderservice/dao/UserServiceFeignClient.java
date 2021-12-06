@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Email: mdshamim723@gmail.com
  */
 
-@FeignClient(value = "user-service", url = "${user-service}")
+@FeignClient(value = "user-service", url = "${user-service-url}")
 public interface UserServiceFeignClient {
 
     @GetMapping(value = "")

@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  order-service:
+    container_name: order-service
+    image: shamim72/order-service:1.0.0
+    environment:
+      - SERVER_PORT=9090
+      - USER-SERVICE-URL=http://localhost:8080
+    ports:
+      - "9090:9090"
+    restart: always
+    network_mode: host

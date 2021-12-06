@@ -22,7 +22,7 @@ public class UserServiceUrlConstant {
 
     public static String BASE_URL;
 
-    @Value("${user-service}")
+    @Value("${user-service-url}")
     public void setSecret(String baseUrl) {
         BASE_URL = baseUrl;
     }
